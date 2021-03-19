@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Coin_Return_Algorithm
 {
-    class Program
+    public class Program
     {
         static Random rnd = new Random();
         static int[] returnableUnits = new int[10]{ 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000 };
@@ -32,20 +32,28 @@ namespace Coin_Return_Algorithm
                     {
                         int[] amounts = GetReturnsRecursive(intInput, paymentAmount);
 
-                        // Add formated resuts into list of strings
-                        List<string> l = new List<string>();
+                        string s = "";
                         int sum = 0;
-                        for (int i = 0; i < amounts.Length; i++)
+                        // Count banknotes/coins only if sum is not zero
+                        if (amounts.Sum() != 0)
                         {
-                            if (amounts[i] == 0)
-                                continue;
-                            sum += amounts[i] * returnableUnits[i];
-                            l.Add($"{amounts[i]}x: {returnableUnits[i]}");
+                            // Add formated resuts into list of strings
+                            List<string> l = new List<string>();
+                            for (int i = 0; i < amounts.Length; i++)
+                            {
+                                if (amounts[i] == 0)
+                                    continue;
+                                sum += amounts[i] * returnableUnits[i];
+                                l.Add($"{amounts[i]}x: {returnableUnits[i]}");
+                            }
+                            // Concatonate results
+                            s = string.Join(" | ", l);
                         }
-                        // Concatonate results
-                        string s = string.Join(" | ", l);
+                        
+
                         Console.WriteLine($"You get back: " + sum);
-                        Console.WriteLine(s);
+                        if (s != "")
+                            Console.WriteLine(s);
 
                         //Create new amount to pay
                         paymentAmount = rnd.Next(1, 200);
@@ -62,7 +70,7 @@ namespace Coin_Return_Algorithm
             }
         }
         //received money must be bigger than target
-        private static int[] GetReturnsRecursive(int receivedMoney, int target)
+        public static int[] GetReturnsRecursive(int receivedMoney, int target)
         {
             int[] memory = new int[returnableUnits.Length];
             int index = returnableUnits.Length-1;
@@ -91,7 +99,7 @@ namespace Coin_Return_Algorithm
 
         }
         //received money must be bigger than target
-        private static int[] GetReturns(int receivedMoney, int target)
+        public static int[] GetReturns(int receivedMoney, int target)
         {// WITHOUT RECURSION
             int moneyToGive = receivedMoney - target;
             //return = target - received money
